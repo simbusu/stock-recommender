@@ -409,13 +409,3 @@ match yet (point-in-time correctness working as intended) and get median-imputed
 **`docker compose ps` shows only long-running containers**
 `airflow-init` is a one-shot container — use `docker compose ps -a` to see it; `Exited (0)` is
 success, not a crash.
-
----
-
-## Before submitting
-
-- Take screenshots of: Airflow DAG graph view, DAG run history (daily cadence), MLflow
-  experiment runs / registry (via the dashboard's Model Performance tab), and `eda_plots/`
-  outputs — these go in the report.
-- Fill in the Group No. + contribution table in the report.
-- Record the demo video required by the submission guidelines.
