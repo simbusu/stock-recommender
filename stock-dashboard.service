@@ -1,0 +1,15 @@
+[Unit]
+Description=Stock Recommender Streamlit Dashboard
+After=network.target docker.service
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/home/%i/stock_recommender
+Environment="PATH=/home/%i/stock_recommender/venv/bin:/usr/bin:/bin"
+ExecStart=/home/%i/stock_recommender/venv/bin/streamlit run dashboard/app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+yfinance
+pandas
+numpy
+scikit-learn
+xgboost
+matplotlib
+seaborn
+mlflow
+sqlalchemy
+psycopg2-binary
+requests
+joblib

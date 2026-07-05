@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Data & artifacts
+data/
+mlruns/
+models/
+eda_plots/
+
+# Logs
+*.log
+streamlit.log
+
+# MLflow local db
+mlflow.db
+
+# Environment / secrets
+.env
+*.pem
+*.key
+
+# OS/editor junk
+.DS_Store
+.vscode/

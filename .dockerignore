@@ -1,0 +1,15 @@
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+mlruns/
+mlflow.db
+data/stocks/*.csv
+*.log
+.pytest_cache/
+.DS_Store
+*.egg-info/
