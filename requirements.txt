@@ -13,3 +13,5 @@ joblib>=1.4
 streamlit>=1.30
 plotly>=5.20
 shap>=0.44
+fastapi>=0.110
+uvicorn>=0.27

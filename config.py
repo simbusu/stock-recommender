@@ -16,7 +16,7 @@ from datetime import datetime
 # actions (rename / demerger) — verify against yfinance before
 # your first live ingestion run:
 #   - ETERNAL.NS      (formerly ZOMATO.NS, renamed 2025)
-#   - TMPV.NS   (Tata Motors demerged into passenger-vehicle
+#   - TATAMOTORS.NS   (Tata Motors demerged into passenger-vehicle
 #                       and commercial-vehicle entities in 2025;
 #                       this list is for the passenger-vehicle arm —
 #                       confirm the exact live ticker on yfinance)
@@ -30,7 +30,7 @@ STOCKS = [
     "ONGC.NS", "BAJAJ-AUTO.NS", "ETERNAL.NS", "COALINDIA.NS", "POWERGRID.NS",
     "ASIANPAINT.NS", "SHRIRAMFIN.NS", "TATASTEEL.NS", "GRASIM.NS", "HINDALCO.NS",
     "INDIGO.NS", "EICHERMOT.NS", "SBILIFE.NS", "TRENT.NS", "WIPRO.NS",
-    "JIOFIN.NS", "TECHM.NS", "APOLLOHOSP.NS", "TMPV.NS", "HDFCLIFE.NS",
+    "JIOFIN.NS", "TECHM.NS", "APOLLOHOSP.NS", "TATAMOTORS.NS", "HDFCLIFE.NS",
     "CIPLA.NS", "DRREDDY.NS", "MAXHEALTH.NS", "TATACONSUM.NS",
 ]
 
@@ -120,6 +120,11 @@ AIRFLOW_API_USER = os.getenv("AIRFLOW_API_USER", "admin")
 AIRFLOW_API_PASSWORD = os.getenv("AIRFLOW_API_PASSWORD", "admin")
 DAG_ID = "stock_pipeline_dag"
 DAG_SCHEDULE = "30 10 * * *"  # 10:30 UTC = 16:00 IST — 30 min after NSE close (15:30 IST), daily
+
+# ─────────────────────────────────────────────────────────────
+# Data API (FastAPI service wrapping Postgres/featured.csv as REST)
+# ─────────────────────────────────────────────────────────────
+DATA_API_BASE_URL = os.getenv("DATA_API_BASE_URL", "http://localhost:8010")
 
 # ─────────────────────────────────────────────────────────────
 # Paths

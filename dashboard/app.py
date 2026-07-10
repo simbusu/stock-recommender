@@ -25,7 +25,7 @@ import data_access as da
 st.set_page_config(page_title="Stock Buy/Sell Recommender", layout="wide", page_icon="📈")
 
 st.title("📈 Nifty Stock Buy/Sell Recommendation Dashboard")
-st.caption("AIMLCZG549 — API-Driven Cloud Native Solutions — Assignment I — Group 114")
+st.caption("AIMLCZG549 — API-Driven Cloud Native Solutions — Assignment I — Group 42")
 
 
 @st.cache_data(ttl=1800)  # 30 min — pipeline now runs once/day, no need to poll every 2 min

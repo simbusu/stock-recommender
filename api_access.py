@@ -2,7 +2,8 @@
 api_access.py — Sub-Objective 3: API Access
 
 3.1 Retrieve Key Application Details via the built-in REST APIs of
-    Airflow and MLflow.
+    Airflow and MLflow, plus a custom-built REST API (data_api.py)
+    wrapping PostgreSQL.
 3.2 Display at least 4 application details.
 
 Retrieves:
@@ -10,6 +11,9 @@ Retrieves:
   2. Last DAG run status and timestamp     (Airflow REST API)
   3. MLflow experiment name and latest run ID  (MLflow REST API)
   4. Registered model name and latest version  (MLflow REST API)
+  5. Row counts per pipeline table         (Data API — FastAPI over Postgres)
+  6. Ticker list (count + sample)          (Data API — FastAPI over Postgres)
+  7. Latest sample price (RELIANCE.NS)     (Data API — FastAPI over Postgres)
 """
 import logging
 
@@ -92,6 +96,39 @@ def get_registered_model_info(model_name: str = "stock_xgb_classifier"):
     }
 
 
+def get_data_api_stats():
+    """Detail 5: row counts per pipeline table, via the custom Data API
+    (FastAPI service wrapping PostgreSQL — see data_api.py)."""
+    url = f"{config.DATA_API_BASE_URL}/stats/row-counts"
+    resp = requests.get(url, timeout=10)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def get_data_api_tickers():
+    """Detail 6: list of tickers available, via the custom Data API."""
+    url = f"{config.DATA_API_BASE_URL}/tickers"
+    resp = requests.get(url, timeout=10)
+    resp.raise_for_status()
+    data = resp.json()
+    return {"ticker_count": data.get("count"), "sample": data.get("tickers", [])[:5]}
+
+
+def get_data_api_sample_price(ticker: str = "RELIANCE.NS"):
+    """Detail 7: latest price row for a sample ticker, via the custom Data API."""
+    url = f"{config.DATA_API_BASE_URL}/prices/{ticker}"
+    resp = requests.get(url, params={"limit": 1}, timeout=10)
+    resp.raise_for_status()
+    data = resp.json()
+    latest = data.get("data", [{}])[0]
+    return {
+        "ticker": ticker,
+        "date": latest.get("Date"),
+        "close": latest.get("Close"),
+        "volume": latest.get("Volume"),
+    }
+
+
 def display_application_details():
     """3.2: Display at least 4 application details retrieved via APIs."""
     details = {}
@@ -116,8 +153,23 @@ def display_application_details():
     except Exception as e:
         details["4. Registered Model"] = f"unavailable ({e})"
 
+    try:
+        details["5. Data API Row Counts"] = get_data_api_stats()
+    except Exception as e:
+        details["5. Data API Row Counts"] = f"unavailable ({e})"
+
+    try:
+        details["6. Data API Tickers"] = get_data_api_tickers()
+    except Exception as e:
+        details["6. Data API Tickers"] = f"unavailable ({e})"
+
+    try:
+        details["7. Data API Sample Price"] = get_data_api_sample_price()
+    except Exception as e:
+        details["7. Data API Sample Price"] = f"unavailable ({e})"
+
     print("=" * 60)
-    print("APPLICATION DETAILS — retrieved via Airflow + MLflow REST APIs")
+    print("APPLICATION DETAILS — retrieved via Airflow + MLflow + Data API REST APIs")
     print("=" * 60)
     for label, value in details.items():
         print(f"\n{label}:")
